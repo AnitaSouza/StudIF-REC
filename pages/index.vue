@@ -4,13 +4,17 @@
       <barraNav></barraNav>
       <center><h2>Log in</h2></center>
       <b-container>
-        <label> <h4>E-mail</h4></label>
-        <b-form-input placeholder="mariadasilva.r@gmail.com"></b-form-input>
-        <label> <h4>Senha</h4> </label>
-        <b-form-input placeholder="Ex: ******"></b-form-input>
-        <NuxtLink to="/tela-calendario"
-          ><b-button class="botão"> login </b-button></NuxtLink
-        >
+        <b-form>
+        <label> <h4>Nome</h4></label>
+        <b-form-input type="text" v-model="form.nome" placeholder="Nome da dica"></b-form-input>
+        <label> <h4>Dica</h4> </label>
+        <b-form-input type="text" v-model="form.dica" placeholder="Texto da dica"></b-form-input>
+        <label> <h4>Data</h4> </label>
+        <b-form-input type="text" v-model="form.data" placeholder="dd/mm/aaaa"></b-form-input>
+        <!-- <NuxtLink to="/tela-calendario"
+          ></NuxtLink -->
+          <b-button class="botão" type="submit" v-on:click="cadastrar"> login </b-button>
+          </b-form>
       </b-container>
     </div>
   </body>
@@ -22,7 +26,28 @@ export default {
   name: 'IndexPage',
   components: { barraNav },
   data() {
-    return {}
+    return {
+      form: {
+        nome: '',
+        dica: '',
+        data: '',
+      },
+      show: true,
+    }
+  },
+   methods: {
+    onSubmit(event) {
+      event.preventDefault()
+      alert(JSON.stringify(this.form))
+    },
+    cadastrar() {
+      this.$axios.post('/dicas', {
+        nome: this.form.nome,
+        dica: this.form.dica,
+        data: this.form.data,
+      })
+      this.$router.push('/lista-dicas')
+    },
   },
 }
 </script>

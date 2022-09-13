@@ -1,36 +1,37 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="dica in listaDicas" :key="dica.id">
-        <NuxtLink v-bind:to="`tela-dica/${dica.id}`">
-          {{ dica.titulo }}
-        </NuxtLink>
-      </li>
-    </ul>
+  <div class="page-holder bg-gray-100 mt-5">
+    <b-container class="bv-example-row">
+      <h1>Lista de Dicas</h1>
+
+      <div :key="dica.id" v-for="dica in dicas">
+        <ItemListaDicas :idDica="dica.id" :dica="dica.nome">
+        </ItemListaDicas>
+      </div>
+    </b-container>
+    <div class="text-center"></div>
   </div>
 </template>
 
 <script>
+import ItemListaDicas from '~/components/ItemListaDicas.vue'
 export default {
   data() {
     return {
-      listaDicas: [
-        {
-          id: 0,
-          titulo: 'Como aguentar o prof Luiz',
-          descricao:
-            'Leia, mas escreva tambem. O estudo feito só por meio da leitura não é tão eficiente. O estudante pode se pegar facilmente distraido no  decorrer das páginas. Por isso, escreva! Faça esquemas, transcreva partes importantes e organize resumos. Quem escreve consegue assimilar melhor o conteúdo e tê-lo por mais tempo na mente.',
-        },
-        {
-          id: 1,
-          titulo: 'Como migrar para a mecânica',
-          descricao: 'dica 2',
-        },
-      ],
+      dicas: [],
+      dados: '',
     }
   },
+  async mounted() {
+    const response = await this.$axios.get('/dicas')
+    this.dicas = response.data
+  },
+  components: { ItemListaDicas },
 }
 </script>
 
+
 <style>
+*{
+  color: black;
+}
 </style>
